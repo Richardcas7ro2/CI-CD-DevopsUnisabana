@@ -48,7 +48,7 @@ La definición de los pasos necesarios para empaquetar y entregar la aplicación
 
 ## 🛠️ Ejecución Local
 
-Si deseas probar la aplicación localmente en tu máquina:
+Para probar la aplicación localmente se deben seguir los siguientes pasos:
 
 ### Opción 1: Usando Node.js y pnpm
 1. Clona el repositorio: `git clone <tu-repositorio>`
@@ -61,15 +61,3 @@ Si deseas probar la aplicación localmente en tu máquina:
 ### Opción 2: Usando Docker
 1. Construye la imagen: `docker build -t devops-webapp .`
 2. Ejecuta el contenedor: `docker run -p 3000:3000 devops-webapp`
-
----
-
-## 📸 Evidencias de Ejecución (Capturas de Pantalla)
-
-*(Nota: Sustituir los enlaces de abajo con las imágenes reales cuando los pipelines se ejecuten en la nube o servidor).*
-
-**1. Ejecución exitosa de GitHub Actions (CI)**
-> ![CI GitHub Actions](assets/github_actions_success.png)
-
-**2. Definición / Ejecución del Pipeline en Jenkins (CD)**
-> ![CD Jenkins](assets/jenkins_pipeline.png)
