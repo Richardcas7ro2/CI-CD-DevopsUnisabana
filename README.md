@@ -62,14 +62,26 @@ Para probar la aplicación localmente se deben seguir los siguientes pasos:
 1. Construye la imagen: `docker build -t devops-webapp .`
 2. Ejecuta el contenedor: `docker run -p 3000:3000 devops-webapp`
 
+## Evidencias
+
 Github Actions:
 <img width="2862" height="1016" alt="image" src="https://github.com/user-attachments/assets/16d49b9b-7733-45ab-98a9-2d178c59d449" />
 
+<img width="2862" height="1304" alt="image" src="https://github.com/user-attachments/assets/69f89052-19d9-4d6b-aa1f-8d24612ffc69" />
 
-![[Pasted image 20260610123615.png|697]]
-![[Pasted image 20260610123658.png]]
-![[Pasted image 20260610123724.png]]
-![[Pasted image 20260610123751.png]]
+<img width="2862" height="1640" alt="image" src="https://github.com/user-attachments/assets/827a87ec-3e52-4dc4-bff2-8f26eff770e8" />
+
+<img width="2862" height="1640" alt="image" src="https://github.com/user-attachments/assets/07381b54-ef55-4bc3-b3a1-e3e8e97f5860" />
+
+<img width="2862" height="1640" alt="image" src="https://github.com/user-attachments/assets/14a60c27-fea1-4c17-9faf-289674556613" />
 
 Jenkins:
-![[Pasted image 20260610123903.png]]![[Pasted image 20260610123931.png]]![[Pasted image 20260610123959.png]]![[Pasted image 20260610124029.png]]
+<img width="2862" height="1640" alt="image" src="https://github.com/user-attachments/assets/8228ceb4-5c7f-46cc-b192-72aa6fb4a9e3" />
+
+<img width="2862" height="1640" alt="image" src="https://github.com/user-attachments/assets/ca5c34c5-5431-4fae-b6ab-99ce6bc057f4" />
+
+<img width="2862" height="1468" alt="image" src="https://github.com/user-attachments/assets/12d0f6d4-df1d-4957-a7a8-1c4a0dcece20" />
+
+<img width="2862" height="958" alt="image" src="https://github.com/user-attachments/assets/b593ee54-3573-4140-bd11-50cd83d6093f" />
+
+
