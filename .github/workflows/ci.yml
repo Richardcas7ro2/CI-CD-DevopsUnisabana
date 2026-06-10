@@ -1,34 +1,44 @@
 name: CI Pipeline
 
+# Definición de los eventos que disparan este pipeline automáticamente
 on:
+  # Se ejecuta cuando se hace "push" (subida de código) a las ramas master o main
   push:
     branches: [ "master", "main" ]
+  # Se ejecuta cuando alguien propone un "Pull Request" hacia estas ramas
   pull_request:
     branches: [ "master", "main" ]
 
 jobs:
   build-and-test:
+    # El entorno virtual donde correrá nuestro pipeline (un servidor alojado por GitHub con la última versión de Ubuntu)
     runs-on: ubuntu-latest
+    
     steps:
+      # Paso 1: Clonar el código de nuestro repositorio en la máquina virtual de GitHub
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      # Paso 2: Instalar y configurar Node.js (fijamos la versión 20, que es la misma del desarrollo local y del Dockerfile)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
+      # Paso 3: Instalar pnpm (nuestro gestor de paquetes), fijando la versión 8 para evitar errores de compatibilidad
       - name: Install pnpm
         uses: pnpm/action-setup@v3
         with:
           version: 8
           run_install: false
 
+      # Paso 4: Obtener la ruta del sistema donde pnpm guarda su caché global
       - name: Get pnpm store directory
         shell: bash
         run: |
           echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
+      # Paso 5: Configurar la caché de GitHub Actions para pnpm. Esto hace que las ejecuciones futuras sean mucho más rápidas
       - name: Setup pnpm cache
         uses: actions/cache@v4
         with:
@@ -37,21 +47,25 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
+      # Paso 6: Instalar las dependencias del proyecto (como Express y Jest) definidas en nuestro package.json
       - name: Install Dependencies
         run: pnpm install
 
+      # Paso 7: Análisis estático (Linting). Busca errores de sintaxis o malas prácticas según nuestras reglas de "Clean Code"
       - name: Lint Code
         run: pnpm run lint
 
+      # Paso 8: Pruebas unitarias y de integración. Ejecuta los tests de Jest para asegurar que la API devuelve los valores esperados
       - name: Run Tests
         run: pnpm test
 
+      # Paso 9: Práctica de DevSecOps (Shift-Left Security). Trivy analiza todo el código y librerías buscando vulnerabilidades críticas
       - name: Run Trivy Vulnerability Scanner
         uses: aquasecurity/trivy-action@master
         with:
-          scan-type: 'fs'
-          scan-ref: '.'
-          format: 'table'
-          exit-code: '1'
+          scan-type: 'fs'          # Escanea el sistema de archivos
+          scan-ref: '.'            # Escanea el directorio actual
+          format: 'table'          # Muestra los resultados en una tabla fácil de leer en los logs
+          exit-code: '1'           # Si encuentra errores graves, rompe el pipeline (falla) para que no pase a producción
           ignore-unfixed: true
           severity: 'CRITICAL,HIGH'
