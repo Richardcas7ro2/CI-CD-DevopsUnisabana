@@ -61,3 +61,15 @@ Para probar la aplicación localmente se deben seguir los siguientes pasos:
 ### Opción 2: Usando Docker
 1. Construye la imagen: `docker build -t devops-webapp .`
 2. Ejecuta el contenedor: `docker run -p 3000:3000 devops-webapp`
+
+Github Actions:
+<img width="2862" height="1016" alt="image" src="https://github.com/user-attachments/assets/16d49b9b-7733-45ab-98a9-2d178c59d449" />
+
+
+![[Pasted image 20260610123615.png|697]]
+![[Pasted image 20260610123658.png]]
+![[Pasted image 20260610123724.png]]
+![[Pasted image 20260610123751.png]]
+
+Jenkins:
+![[Pasted image 20260610123903.png]]![[Pasted image 20260610123931.png]]![[Pasted image 20260610123959.png]]![[Pasted image 20260610124029.png]]
