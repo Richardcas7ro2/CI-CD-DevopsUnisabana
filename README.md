@@ -4,10 +4,13 @@ Este repositorio contiene el código fuente y las configuraciones de automatizac
 
 El proyecto consiste en una aplicación Node.js/Express muy ligera, con una interfaz gráfica moderna (basada en *Glassmorphism*), diseñada para exponer información clave del entorno de ejecución (Hostname, IP, Sistema Operativo). Esta estructura resulta ideal para futuros despliegues en orquestadores de contenedores como Kubernetes.
 
-## 👥 Integrantes del Equipo (Grupo 9)
+## 👥 Integrantes del Equipo 
 Abdul Mauricio Reyes Parra
+
 Jorge Rolando Maradey Duran
+
 Jorge Esteban Triviño Correa
+
 Wilmer Ricardo Castro Delgadillo
 
 ---
