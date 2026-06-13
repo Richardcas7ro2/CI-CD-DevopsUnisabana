@@ -22,26 +22,31 @@ pipeline {
 
         stage('Build & Push Docker Image') {
             steps {
-                // Inyectamos las credenciales de DockerHub de forma segura
-                // Debes tener configurada una credencial en Jenkins con el ID 'dockerhub-credentials'
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                    
                     echo "Paso 1: Construyendo la imagen Docker..."
-                    // Usamos la variable DOCKER_USERNAME inyectada para etiquetar la imagen correctamente
                     sh "docker build -t ${DOCKER_USERNAME}/${IMAGE_NAME}:${IMAGE_TAG} ."
                     
                     echo "Paso 2: Autenticando en DockerHub..."
-                    // Iniciamos sesión en Docker enviando el password por la entrada estándar (evita alertas de seguridad)
                     sh "echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin"
                     
                     echo "Paso 3: Subiendo imagen al registro..."
-                    // Hacemos push de la versión específica
                     sh "docker push ${DOCKER_USERNAME}/${IMAGE_NAME}:${IMAGE_TAG}"
                     
                     echo "Paso 4: Actualizando y subiendo la etiqueta 'latest'..."
                     sh "docker tag ${DOCKER_USERNAME}/${IMAGE_NAME}:${IMAGE_TAG} ${DOCKER_USERNAME}/${IMAGE_NAME}:latest"
                     sh "docker push ${DOCKER_USERNAME}/${IMAGE_NAME}:latest"
                 }
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                echo "Aplicando manifiestos de Kubernetes..."
+                // kind debe estar corriendo en local y Jenkins debe poder ver ~/.kube/config
+                sh "kubectl apply -f k8s/"
+                
+                echo "Forzando actualización de la imagen para tomar la última versión (latest)..."
+                sh "kubectl rollout restart deployment webapp-deployment -n devops-webapp || true"
             }
         }
     }

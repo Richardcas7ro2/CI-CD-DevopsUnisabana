@@ -88,10 +88,18 @@ jobs:
           args: --severity-threshold=high
 
       # Paso 11: SonarCloud - Análisis de calidad y seguridad del código
-      # Evalúa: bugs potenciales, code smells, vulnerabilidades de seguridad,
-      # cobertura de tests y duplicación de código
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Token automático de GitHub para decorar PRs
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}     # Token de autenticación de SonarCloud
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      # Paso 12: Trigger Jenkins CD (A través de Smee.io)
+      - name: Trigger Jenkins CD Pipeline
+        if: success()
+        run: |
+          echo "Disparando pipeline de CD en Jenkins local..."
+          curl -X POST \
+            -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_TOKEN }}" \
+            "https://smee.io/devops-unisabana-cd"
+
