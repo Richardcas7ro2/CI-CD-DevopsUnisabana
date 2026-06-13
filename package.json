@@ -9,7 +9,8 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "prom-client": "^15.1.3"
   },
   "devDependencies": {
     "eslint": "^8.56.0",
