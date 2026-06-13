@@ -18,6 +18,8 @@ jobs:
       # Paso 1: Clonar el código de nuestro repositorio en la máquina virtual de GitHub
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # SonarCloud necesita el historial completo para analizar cambios
 
       # Paso 2: Instalar y configurar Node.js (fijamos la versión 20, que es la misma del desarrollo local y del Dockerfile)
       - name: Setup Node.js
@@ -59,13 +61,37 @@ jobs:
       - name: Run Tests
         run: pnpm test
 
-      # Paso 9: Práctica de DevSecOps (Shift-Left Security). Trivy analiza todo el código y librerías buscando vulnerabilidades críticas
+      # ============================================================
+      # SEGURIDAD - DevSecOps (Shift-Left Security)
+      # ============================================================
+
+      # Paso 9: Trivy - Escaneo de vulnerabilidades en el sistema de archivos
+      # Analiza todo el código y librerías buscando vulnerabilidades críticas conocidas (CVEs)
       - name: Run Trivy Vulnerability Scanner
         uses: aquasecurity/trivy-action@master
         with:
-          scan-type: 'fs'          # Escanea el sistema de archivos
-          scan-ref: '.'            # Escanea el directorio actual
-          format: 'table'          # Muestra los resultados en una tabla fácil de leer en los logs
-          exit-code: '1'           # Si encuentra errores graves, rompe el pipeline (falla) para que no pase a producción
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'table'
+          exit-code: '1'
           ignore-unfixed: true
           severity: 'CRITICAL,HIGH'
+
+      # Paso 10: Snyk - Detección de vulnerabilidades en dependencias
+      # Analiza las dependencias del proyecto (package.json) buscando librerías con fallos de seguridad conocidos
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
+        continue-on-error: true  # No rompe el pipeline para poder ver el reporte completo
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+
+      # Paso 11: SonarCloud - Análisis de calidad y seguridad del código
+      # Evalúa: bugs potenciales, code smells, vulnerabilidades de seguridad,
+      # cobertura de tests y duplicación de código
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Token automático de GitHub para decorar PRs
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}     # Token de autenticación de SonarCloud
